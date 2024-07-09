@@ -1,0 +1,38 @@
+services:
+  fpm:
+    build: fpm
+    volumes:
+      - ..:/workspaces/laravel:cached
+    user: 1000:1000
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  nginx:
+    build: nginx
+    volumes:
+      - ..:/workspaces/laravel
+    ports:
+      - 80:80
+    depends_on:
+      - fpm
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  postgres:
+    image: postgres:16-alpine3.20
+    # ports:
+    #   - "5432:5432"
+    env_file:
+      - ./postgre/.env
+    volumes:
+      - postgres-data:/var/lib/postgresql/data/all
+
+  redis:
+    image: redis:7.2-alpine3.18
+    # ports:
+    #   - 6379:6379
+
+
+volumes:
+  postgres-data:
+

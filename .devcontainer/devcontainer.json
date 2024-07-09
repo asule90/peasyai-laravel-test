@@ -1,0 +1,47 @@
+{
+    "name": "peasyai-laravel",
+    "service": "fpm",
+    "remoteUser": "vscode",
+    "shutdownAction": "stopCompose",
+    "workspaceFolder": "/workspaces/laravel",
+    "dockerComposeFile": "docker-compose.yaml",
+
+    "customizations": {
+        "vscode" : {
+            "extensions": [
+				"formulahendry.auto-close-tag",
+				"formulahendry.auto-rename-tag",
+				"alefragnani.Bookmarks",
+				"mikestead.dotenv",
+				"formulahendry.auto-complete-tag",
+				"lafe.contextualduplicate",
+				"Terrastruct.d2",
+				"matt-meyers.vscode-dbml",
+				"bmewburn.vscode-intelephense-client",
+				"ryannaddy.laravel-artisan",
+				"amiralizadeh9480.laravel-extra-intellisense",
+				"absszero.vscode-laravel-goto",
+				"porifa.laraphense",
+				"mohamedbenhida.laravel-intellisense",
+				"adamhartford.vscode-base64",
+				"eamodio.gitlens",
+				"adpyke.vscode-sql-formatter",
+				"qvtec3.swagger-php-annotation",
+				"DEVSENSE.phptools-vscode"
+			]
+        }
+    },
+	"mounts": [
+		"source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind",
+		"source=${localEnv:HOME}${localEnv:USERPROFILE}/.ssh,target=/home/vscode/.ssh,readonly,type=bind"
+	],
+	// Features to add to the dev container. More info: https://containers.dev/features.
+	// "features": {},
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	// "forwardPorts": [8000],
+	// Use 'postCreateCommand' to run commands after the container is created.
+	"postCreateCommand": {
+		"configure-docker": "sudo chown $(whoami) /var/run/docker.sock",
+		// "chmod-ssh": "sudo chmod -R 700 ~/.ssh"
+	}
+}
