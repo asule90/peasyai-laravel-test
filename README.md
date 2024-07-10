@@ -1,66 +1,74 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Peasy.ai Laravel test
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## development
+using dev container, you can easily run this project just by using docker and vscode
+using [karma-runner](karma-runner.github.io/6.4/dev/git-commit-msg.html) git commit convention
 
-## About Laravel
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Description
+Sampling an element from json result:
+<details>
+  <summary>Json</summary>
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+  ```json
+  {
+    "gender": "female",
+    "name": {
+    "title": "Ms",
+    "first": "Abbey",
+    "last": "Clarke"
+    },
+    "location": {
+    "street": {
+        "number": 8388,
+        "name": "Park Lane"
+    },
+    "city": "Portmarnock",
+    "state": "Wicklow",
+    "country": "Ireland",
+    "postcode": 37431,
+    "coordinates": {
+        "latitude": "-3.8361",
+        "longitude": "66.4098"
+    },
+    "timezone": {
+        "offset": "-2:00",
+        "description": "Mid-Atlantic"
+    }
+    },
+    "email": "abbey.clarke@example.com",
+    "login": {
+    "uuid": "02c6d9cf-4d30-40bc-9a07-43bfc9dfe455",
+    "username": "heavyelephant318",
+    "password": "9876",
+    "salt": "2macSXhN",
+    "md5": "90cb7cb98fa0e49277f8d44431a887c9",
+    "sha1": "ed8914a332251e15766b791e20605defda3aa02b",
+    "sha256": "8322ca381e39c4fcc6cc76182a0089e4de99ecde9248ddeafe5df1e3e406dbb5"
+    },
+    "dob": {
+    "date": "1986-09-27T16:30:46.337Z",
+    "age": 37
+    },
+    "registered": {
+    "date": "2021-06-25T15:47:21.217Z",
+    "age": 3
+    },
+    "phone": "051-898-2339",
+    "cell": "081-802-0396",
+    "id": {
+    "name": "PPS",
+    "value": "1932412T"
+    },
+    "picture": {
+    "large": "https://randomuser.me/api/portraits/women/74.jpg",
+    "medium": "https://randomuser.me/api/portraits/med/women/74.jpg",
+    "thumbnail": "https://randomuser.me/api/portraits/thumb/women/74.jpg"
+    },
+    "nat": "IE"
+  }
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+  ```
+</details>
 
-## Learning Laravel
-
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
-
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
-
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-## Laravel Sponsors
-
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
-
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+assuming uuid is from login property

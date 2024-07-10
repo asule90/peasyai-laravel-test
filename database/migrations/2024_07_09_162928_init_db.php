@@ -11,7 +11,22 @@ return new class extends Migration
      */
     public function up(): void
     {
-        //
+        Schema::create('random_user', function(Blueprint $table) {
+            $table->uuid('uuid')->primary();
+            $table->string('gender', 10);
+            $table->jsonb('name');
+            $table->jsonb('location');
+            $table->unsignedInteger('age');
+        });
+        Schema::create('daily_record', function(Blueprint $table) {
+            $table->date('date');
+            $table->unsignedInteger('male_count');
+            $table->unsignedInteger('female_count');
+            $table->decimal('male_avg_age', 10, 2);
+            $table->decimal('female_avg_age', 10, 2);
+
+            $table->primary('date');
+        });
     }
 
     /**
@@ -19,6 +34,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::dropIfExists('daily_record');
+        Schema::dropIfExists('random_user');
     }
 };

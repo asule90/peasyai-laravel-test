@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Facade;
 use Illuminate\Support\ServiceProvider;
 
 return [
+    'api_random_user' => env('API_RANDOM_USER', 'http://localhost'),
 
     /*
     |--------------------------------------------------------------------------
@@ -70,7 +71,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => env('TIMEZONE', 'UTC'),
 
     /*
     |--------------------------------------------------------------------------
@@ -168,6 +169,7 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        App\Providers\RepoServiceProvider::class
     ])->toArray(),
 
     /*
