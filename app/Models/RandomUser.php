@@ -13,6 +13,7 @@ class RandomUser extends Model
     protected $table = 'random_user';
     protected $primaryKey = 'uuid';
     public $timestamps = false;
+    protected $keyType = 'string';
 
     /* protected $fillable = [
         'name->title',

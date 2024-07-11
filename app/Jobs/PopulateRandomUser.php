@@ -3,7 +3,6 @@
 namespace App\Jobs;
 
 use App\Dto\GenderCountDto;
-use App\Models\RandomUser;
 use App\Repositories\DataRepositoryInterface;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -11,7 +10,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 
-class FetchRandomUser implements ShouldQueue
+class PopulateRandomUser implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -27,11 +26,19 @@ class FetchRandomUser implements ShouldQueue
      */
     public function handle(DataRepositoryInterface $repo): void
     {
-        $results = $repo->fetchData();
+        $rawData = $repo->fetchData();
 
-        $genderCount = new GenderCountDto();
+        $genderCounter = new GenderCountDto();
         
-        $filteredData = array_map(function ($object) use (&$genderCount) {
+        $preparedData = $this->prepareData($rawData, $genderCounter);
+
+        $repo->insertHourly($preparedData);
+
+        $repo->increaseGenderCounterCache($genderCounter);
+    }
+
+    private function prepareData($rawData, &$genderCounter): array {
+        return array_map(function ($object) use (&$genderCounter) {
             $record = [
                 'name' => json_encode($object['name']), 
                 'location' => json_encode($object['location']),
@@ -41,19 +48,10 @@ class FetchRandomUser implements ShouldQueue
             ];
 
             $gender = $record['gender'];
-            if (property_exists($genderCount, $gender))
-                $genderCount->$gender++;
+            if (property_exists($genderCounter, $gender))
+                $genderCounter->$gender++;
 
             return $record;
-        }, $results);
-
-        RandomUser::upsert($filteredData, ['uuid'], [
-            'name',
-            'location',
-            'gender',
-            'age',
-        ]);
-
-        $repo->cacheHourly($genderCount);
+        }, $rawData);
     }
 }

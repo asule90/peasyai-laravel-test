@@ -2,7 +2,8 @@
 
 namespace App\Console;
 
-use App\Jobs\FetchRandomUser;
+use App\Jobs\CalculateDailyRecord;
+use App\Jobs\PopulateRandomUser;
 use App\Repositories\DataRepository;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
@@ -15,9 +16,12 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        $schedule->job(new FetchRandomUser())
+        $schedule->job(new PopulateRandomUser())
             ->everyMinute();
-            // ->hourly();
+
+        $schedule->job(new CalculateDailyRecord())
+            ->everyTenMinutes();
+            // ->daily();
     }
 
     /**

@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -19,7 +20,7 @@ return new class extends Migration
             $table->unsignedInteger('age');
         });
         Schema::create('daily_record', function(Blueprint $table) {
-            $table->date('date');
+            $table->date('date')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->unsignedInteger('male_count');
             $table->unsignedInteger('female_count');
             $table->decimal('male_avg_age', 10, 2);
