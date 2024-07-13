@@ -6,7 +6,9 @@ ARG USER_UID=1000
 ARG USER_GID=1000
 ARG HOME_DIR=/home/$USERNAME
 
-RUN apk update && apk upgrade && apk add -q --update --progress --no-cache autoconf \
+RUN echo "http://dl-cdn.alpinelinux.org/alpine/v3.19/main" > /etc/apk/repositories \
+    && echo "http://dl-cdn.alpinelinux.org/alpine/v3.19/community" >> /etc/apk/repositories \
+    && apk update && apk upgrade && apk add -q --update --progress --no-cache autoconf \
     bash coreutils curl docker-cli docker-compose g++ git jq make postgresql-client \
     ncurses openssh-client sudo supervisor vim vim-doc zsh zsh-vcs libpq-dev
 
@@ -27,6 +29,10 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" &&
     php composer-setup.php && \
     php -r "unlink('composer-setup.php');" && \
     mv composer.phar /usr/local/bin/composer;
+
+# install node & vue
+RUN apk add --update nodejs npm \
+    && npm install @inertiajs/vue3
 
 USER $USERNAME
 WORKDIR $HOME_DIR

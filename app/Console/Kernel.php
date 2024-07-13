@@ -16,12 +16,16 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        $schedule->job(new PopulateRandomUser())
-            ->everyMinute();
+        $schedulerRandomuser = $schedule->job(new PopulateRandomUser());
+        $schedulerCalculateDaily = $schedule->job(new CalculateDailyRecord());
 
-        $schedule->job(new CalculateDailyRecord())
-            ->everyTenMinutes();
-            // ->daily();
+        if (config('app.env')=='local') {
+            $schedulerRandomuser->everyMinute();
+            $schedulerCalculateDaily->everyFiveMinutes();
+        } else {
+            $schedulerRandomuser->hourly();
+            $schedulerCalculateDaily->daily();
+        }
     }
 
     /**

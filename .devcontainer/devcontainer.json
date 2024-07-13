@@ -9,26 +9,27 @@
     "customizations": {
         "vscode" : {
             "extensions": [
-				"formulahendry.auto-close-tag",
-				"formulahendry.auto-rename-tag",
-				"alefragnani.Bookmarks",
-				"mikestead.dotenv",
-				"formulahendry.auto-complete-tag",
-				"lafe.contextualduplicate",
-				"Terrastruct.d2",
-				"matt-meyers.vscode-dbml",
-				"bmewburn.vscode-intelephense-client",
-				"ryannaddy.laravel-artisan",
-				"amiralizadeh9480.laravel-extra-intellisense",
-				"absszero.vscode-laravel-goto",
-				"porifa.laraphense",
-				"mohamedbenhida.laravel-intellisense",
-				"adamhartford.vscode-base64",
-				"eamodio.gitlens",
-				"adpyke.vscode-sql-formatter",
-				"qvtec3.swagger-php-annotation",
-				"DEVSENSE.phptools-vscode"
-			]
+                "formulahendry.auto-close-tag",
+                "formulahendry.auto-rename-tag",
+                "alefragnani.Bookmarks",
+                "mikestead.dotenv",
+                "formulahendry.auto-complete-tag",
+                "lafe.contextualduplicate",
+                "Terrastruct.d2",
+                "matt-meyers.vscode-dbml",
+                "bmewburn.vscode-intelephense-client",
+                "ryannaddy.laravel-artisan",
+                "amiralizadeh9480.laravel-extra-intellisense",
+                "absszero.vscode-laravel-goto",
+                "porifa.laraphense",
+                "mohamedbenhida.laravel-intellisense",
+                "adamhartford.vscode-base64",
+                "eamodio.gitlens",
+                "adpyke.vscode-sql-formatter",
+                "qvtec3.swagger-php-annotation",
+                "DEVSENSE.phptools-vscode",
+                "Vue.volar"
+            ]
         }
     },
 	"mounts": [

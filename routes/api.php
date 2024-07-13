@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\SiteController;
 use App\Models\DailyRecord;
 use App\Models\RandomUser;
 use Illuminate\Http\Request;
@@ -20,8 +21,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::patch('/testEvent', function(Request $request) {
+Route::patch('/test-change-male', function(Request $request) {
     $dr = DailyRecord::inRandomOrder()->first();
     $dr->male_count += 1;
     $dr->save();
+});
+
+Route::controller(SiteController::class)->group(function () {
+    Route::delete('/{id}', "delete")->whereUuid('id');
 });

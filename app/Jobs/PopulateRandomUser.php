@@ -26,7 +26,7 @@ class PopulateRandomUser implements ShouldQueue
      */
     public function handle(DataRepositoryInterface $repo): void
     {
-        $rawData = $repo->fetchData();
+        $rawData = $repo->fetchRandomUser();
 
         $genderCounter = new GenderCountDto();
         

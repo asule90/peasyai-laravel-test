@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Redis;
 
 class DataRepository implements DataRepositoryInterface {
 
-    public function fetchData(): array {
+    public function fetchRandomUser(): array {
         $response = Http::get(config('app.api_random_user'));
         if ($response->ok()) {
             return $response->json('results');
@@ -60,5 +60,29 @@ class DataRepository implements DataRepositoryInterface {
             ARRAY['male', 'female'],
             gender
         )")->get();
+    }
+
+    public function deleteUser(string $id): void {
+        $user = RandomUser::findOrFail($id);
+        $user->delete();
+    }
+
+    public function selectAllUser(): Collection {
+        return RandomUser::select(
+                'uuid',
+                'age',
+                'gender',
+                'created_at',
+            )
+            ->selectRaw("CONCAT(name ->> 'title', ' ', name ->> 'first', ' ', name ->> 'last') AS full_name")
+            ->selectRaw("CONCAT(
+                location -> 'street' ->> 'name',
+                ' ', location -> 'street' ->> 'number',
+                ' ', location ->> 'city', 
+                ' ', location ->> 'state'
+                ' ', location ->> 'country') 
+                AS full_location"
+            )
+            ->get();
     }
 }

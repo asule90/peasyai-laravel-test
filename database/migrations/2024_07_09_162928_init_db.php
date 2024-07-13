@@ -18,6 +18,7 @@ return new class extends Migration
             $table->jsonb('name');
             $table->jsonb('location');
             $table->unsignedInteger('age');
+            $table->timestamps();
         });
         Schema::create('daily_record', function(Blueprint $table) {
             $table->date('date')->default(DB::raw('CURRENT_TIMESTAMP'));
