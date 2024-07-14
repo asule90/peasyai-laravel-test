@@ -5,6 +5,7 @@ namespace App\Listeners;
 use App\Events\DailyRecordCountChanged;
 use App\Models\RandomUser;
 use App\Repositories\DataRepositoryInterface;
+use App\Repositories\PersistentRepoInterface;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Log;
@@ -16,7 +17,7 @@ class CalculateAvgAge /* implements ShouldQueue */
     /**
      * Create the event listener.
      */
-    public function __construct(public DataRepositoryInterface $repo)
+    public function __construct(public PersistentRepoInterface $persistentRepo)
     {
         Log::info('CalculateAvgAge triggered');
     }
@@ -28,7 +29,7 @@ class CalculateAvgAge /* implements ShouldQueue */
     {   
         if ($event->dailyRecord->wasChanged(['male_count', 'female_count'])) {
 
-            $avgAge = $this->repo->getAverageAgeByGender();
+            $avgAge = $this->persistentRepo->getAverageAgeByGender();
 
             $event->dailyRecord->male_avg_age =  $avgAge->get(0)->avg;
             $event->dailyRecord->female_avg_age = $avgAge->get(1)->avg;

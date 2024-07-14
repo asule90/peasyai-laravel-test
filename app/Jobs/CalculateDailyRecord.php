@@ -3,8 +3,8 @@
 namespace App\Jobs;
 
 use App\Models\DailyRecord;
-use App\Models\RandomUser;
-use App\Repositories\DataRepositoryInterface;
+use App\Repositories\CacheRepoInterface;
+use App\Repositories\PersistentRepoInterface;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -26,19 +26,22 @@ class CalculateDailyRecord implements ShouldQueue
     /**
      * Execute the job.
      */
-    public function handle(DataRepositoryInterface $repo): void
+    public function handle(
+        CacheRepoInterface $cacheRepo,
+        PersistentRepoInterface $persistentRepo
+    ): void
     {
-        $genderCount = $repo->getCache();        
+        $genderCount = $cacheRepo->get();        
 
-        $avgAge = $repo->getAverageAgeByGender();
+        $avgAge = $persistentRepo->getAverageAgeByGender();
 
         $daily = new DailyRecord;
         $daily->male_count = $genderCount->male;
         $daily->female_count = $genderCount->female;
         $daily->male_avg_age = $avgAge->get(0)->avg;
         $daily->female_avg_age = $avgAge->get(1)->avg;
-
         $daily->save();
-        $repo->clearCache();
+
+        $cacheRepo->clear();
     }
 }

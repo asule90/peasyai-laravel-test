@@ -3,7 +3,9 @@
 namespace App\Jobs;
 
 use App\Dto\GenderCountDto;
-use App\Repositories\DataRepositoryInterface;
+use App\Repositories\CacheRepoInterface;
+use App\Repositories\PersistentRepoInterface;
+use App\Repositories\SourceRepoInterface;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -24,17 +26,21 @@ class PopulateRandomUser implements ShouldQueue
     /**
      * Execute the job.
      */
-    public function handle(DataRepositoryInterface $repo): void
+    public function handle(
+        SourceRepoInterface $sourceRepo,
+        CacheRepoInterface $cacheRepo,
+        PersistentRepoInterface $persistentRepo,
+        ): void
     {
-        $rawData = $repo->fetchRandomUser();
+        $rawData = $sourceRepo->fetch();
 
         $genderCounter = new GenderCountDto();
         
         $preparedData = $this->prepareData($rawData, $genderCounter);
 
-        $repo->insertHourly($preparedData);
+        $persistentRepo->insertHourly($preparedData);
 
-        $repo->increaseGenderCounterCache($genderCounter);
+        $cacheRepo->increaseGenderCounter($genderCounter);
     }
 
     private function prepareData($rawData, &$genderCounter): array {
