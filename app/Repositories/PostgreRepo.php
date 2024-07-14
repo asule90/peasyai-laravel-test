@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Collection;
 
 class PostgreRepo implements PersistentRepoInterface {
 
-    public function upsertMany(array $data): void {
+    public function upsertManyUsers(array $data): void {
         RandomUser::upsert($data, ['uuid'], [
             'name',
             'location',
@@ -16,9 +16,10 @@ class PostgreRepo implements PersistentRepoInterface {
         ]);
     }
 
-    public function getAverageAgeByGender(): Collection {
+    public function getAvgGenderAgeByDate(string $date): Collection {
         return RandomUser::select('gender')
         ->selectRaw('AVG(age)')
+        ->whereRaw("TO_CHAR(created_at, 'YYYY-MM-DD') LIKE '$date'")
         ->groupBy('gender')
         ->orderByRaw("array_position(
             ARRAY['male', 'female'],

@@ -24,7 +24,7 @@ class CalculateAvgAge /* implements ShouldQueue */
     {   
         if ($event->dailyRecord->wasChanged(['male_count', 'female_count'])) {
 
-            $avgAge = $this->persistentRepo->getAverageAgeByGender();
+            $avgAge = $this->persistentRepo->getAvgGenderAgeByDate($event->dailyRecord->date);
 
             $event->dailyRecord->male_avg_age =  $avgAge->get(0)->avg;
             $event->dailyRecord->female_avg_age = $avgAge->get(1)->avg;

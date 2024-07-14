@@ -6,8 +6,8 @@ use App\Models\RandomUser;
 use Illuminate\Database\Eloquent\Collection;
 
 interface PersistentRepoInterface {
-    public function upsertMany(array $data): void;
-    public function getAverageAgeByGender(): Collection;
+    public function upsertManyUsers(array $data): void;
+    public function getAvgGenderAgeByDate(string $date): Collection;
     public function getDailyByDate(string $date): ?DailyRecord;
     public function deleteUser(RandomUser $entity): void;
     public function selectAllUser(): Collection;

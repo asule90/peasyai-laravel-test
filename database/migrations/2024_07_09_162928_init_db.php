@@ -21,7 +21,7 @@ return new class extends Migration
             $table->timestamps();
         });
         Schema::create('daily_record', function(Blueprint $table) {
-            $table->date('date')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->date('date');
             $table->unsignedInteger('male_count');
             $table->unsignedInteger('female_count');
             $table->decimal('male_avg_age', 10, 2);
