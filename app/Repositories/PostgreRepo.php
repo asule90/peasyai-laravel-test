@@ -1,12 +1,13 @@
 <?php
 namespace App\Repositories;
 
+use App\Models\DailyRecord;
 use App\Models\RandomUser;
 use Illuminate\Database\Eloquent\Collection;
 
 class PostgreRepo implements PersistentRepoInterface {
 
-    public function insertHourly(array $data): void {
+    public function upsertMany(array $data): void {
         RandomUser::upsert($data, ['uuid'], [
             'name',
             'location',
@@ -25,9 +26,20 @@ class PostgreRepo implements PersistentRepoInterface {
         )")->get();
     }
 
-    public function deleteUser(string $id): void {
-        $user = RandomUser::findOrFail($id);
-        $user->delete();
+    public function getDailyByDate(string $date): ?DailyRecord {
+        return DailyRecord::select(
+            'date',
+            'male_count',
+            'female_count',
+            'male_avg_age',
+            'female_avg_age',
+        )->where('date', $date)
+        ->limit(1)
+        ->first();
+    }
+
+    public function deleteUser(RandomUser $entity): void {
+        $entity->delete();
     }
 
     public function selectAllUser(): Collection {
@@ -47,5 +59,9 @@ class PostgreRepo implements PersistentRepoInterface {
                 AS full_location"
             )
             ->get();
+    }
+
+    public function saveDaily(DailyRecord $entity): void {
+        $entity->save();
     }
 }

@@ -40,7 +40,8 @@ class CalculateDailyRecord implements ShouldQueue
         $daily->female_count = $genderCount->female;
         $daily->male_avg_age = $avgAge->get(0)->avg;
         $daily->female_avg_age = $avgAge->get(1)->avg;
-        $daily->save();
+
+        $persistentRepo->saveDaily($daily);
 
         $cacheRepo->clear();
     }

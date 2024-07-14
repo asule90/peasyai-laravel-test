@@ -17,16 +17,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
-Route::patch('/test-change-male', function(Request $request) {
-    $dr = DailyRecord::inRandomOrder()->first();
-    $dr->male_count += 1;
-    $dr->save();
-});
-
 Route::controller(SiteController::class)->group(function () {
     Route::delete('/{id}', "delete")->whereUuid('id');
 });

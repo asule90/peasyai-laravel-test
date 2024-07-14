@@ -17,6 +17,7 @@ class SiteController extends Controller
             'data' => $collection
         ]);
     }
+
     public function delete(Request $request, string $id, SiteServiceInterface $service)
     {
         try {
@@ -27,8 +28,8 @@ class SiteController extends Controller
             );
         } catch (\Throwable $th) {
             return Response::error(
-                statusCode: 422,
-                message: 'Problem deleting user',
+                statusCode: $th->getCode(),
+                message: $th->getMessage(),
             );
         }
         

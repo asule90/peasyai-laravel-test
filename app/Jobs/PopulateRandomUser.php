@@ -38,7 +38,7 @@ class PopulateRandomUser implements ShouldQueue
         
         $preparedData = $this->prepareData($rawData, $genderCounter);
 
-        $persistentRepo->insertHourly($preparedData);
+        $persistentRepo->upsertMany($preparedData);
 
         $cacheRepo->increaseGenderCounter($genderCounter);
     }

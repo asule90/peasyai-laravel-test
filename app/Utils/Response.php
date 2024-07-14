@@ -16,7 +16,7 @@ class Response
         return $response;
     }
 
-    public static function error($statusCode = 400, $message = null)
+    public static function error($statusCode = 422, $message = null)
     {
         return response()->json([
             'success' => false,

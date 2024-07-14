@@ -4,10 +4,8 @@ namespace App\Console;
 
 use App\Jobs\CalculateDailyRecord;
 use App\Jobs\PopulateRandomUser;
-use App\Repositories\DataRepository;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
-use Illuminate\Support\Facades\Log;
 
 class Kernel extends ConsoleKernel
 {

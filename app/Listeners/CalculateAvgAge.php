@@ -3,11 +3,7 @@
 namespace App\Listeners;
 
 use App\Events\DailyRecordCountChanged;
-use App\Models\RandomUser;
-use App\Repositories\DataRepositoryInterface;
 use App\Repositories\PersistentRepoInterface;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Log;
 
 class CalculateAvgAge /* implements ShouldQueue */
@@ -19,7 +15,6 @@ class CalculateAvgAge /* implements ShouldQueue */
      */
     public function __construct(public PersistentRepoInterface $persistentRepo)
     {
-        Log::info('CalculateAvgAge triggered');
     }
 
     /**
