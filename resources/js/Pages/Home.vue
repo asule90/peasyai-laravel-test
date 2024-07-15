@@ -69,22 +69,6 @@ const headers = ref([
   { title: '', sortable: false },
 ])
 
-function deleteUser(uuid) {
-  if(!confirm('you are going to delete this data, are you sure?')){
-    return false;
-  }
-  
-  window.axios.delete('/api/users/' + uuid)
-    .then((resp) => {
-      fetchusers()
-    }).catch((err) => {
-      if (err.response.data.message) {
-        alert(err.response.data.message)
-      } else {
-        alert(err.message)
-      }
-    })
-}
 
 function fetchUsers() {
   loading.value = true
@@ -93,7 +77,7 @@ function fetchUsers() {
     .then((resp) => {
       data.value = resp.data.data
     }).catch((err) => {
-      if (err.response.data.message) {
+      if (err.response?.data?.message) {
         alert(err.response.data.message)
       } else {
         alert(err.message)
@@ -109,6 +93,23 @@ function formatDate(dateString) {
   
   const pattern = "yyyy/MMM/d HH:mm:ss zzz";
   return formatInTimeZone(date, timeZone, pattern);
+}
+
+function deleteUser(uuid) {
+  if(!confirm('you are going to delete this data, are you sure?')){
+    return false;
+  }
+  
+  window.axios.delete('/api/users/' + uuid)
+    .then((resp) => {
+      fetchUsers()
+    }).catch((err) => {
+      if (err.response?.data?.message) {
+        alert(err.response.data.message)
+      } else {
+        alert(err.message)
+      }
+    })
 }
 
 onMounted(() => {
