@@ -31,10 +31,12 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" &&
     mv composer.phar /usr/local/bin/composer;
 
 # install node & vue
-RUN apk add --update nodejs npm \
-    && npm install @inertiajs/vue3
+RUN apk add --update nodejs npm 
 
 USER $USERNAME
+
+RUN npm install @inertiajs/vue3 && npm install && npm run build
+
 WORKDIR $HOME_DIR
 
 # Install Oh-My-Zsh

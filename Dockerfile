@@ -40,10 +40,11 @@ RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" &&
 COPY --chown=$USER_UID:$USER_GID composer* ./
 
 # install node & vue
-RUN apk add --update nodejs npm \
-    && npm install @inertiajs/vue3
+RUN apk add --update nodejs npm 
 
 USER $USERNAME
+
+RUN npm install @inertiajs/vue3 && npm install && npm run build
 
 RUN composer install --prefer-dist --no-scripts --no-dev --no-autoloader
 COPY --chown=$USER_UID:$USER_GID . .

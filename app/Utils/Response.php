@@ -18,6 +18,10 @@ class Response
 
     public static function error($statusCode = 422, $message = null)
     {
+        if ( !is_int($statusCode) || ($statusCode < 100 || $statusCode >= 600)) {
+            $statusCode = 422;
+        }
+
         return response()->json([
             'success' => false,
             'message' => $message,
