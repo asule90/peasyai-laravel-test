@@ -2,6 +2,7 @@ import './bootstrap';
 
 import { createApp, h } from 'vue'
 import { createInertiaApp } from '@inertiajs/vue3'
+import HighchartsVue from 'highcharts-vue';
 
 // Vuetify
 import 'vuetify/styles'
@@ -32,6 +33,7 @@ createInertiaApp({
     createApp({ render: () => h(App, props) })
       .use(vuetify)
       .use(plugin)
+      .use(HighchartsVue)
       .mount(el)
   },
 })

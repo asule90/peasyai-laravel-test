@@ -7,4 +7,5 @@ use Illuminate\Http\Request;
 interface SiteServiceInterface {
     public function getList(): Collection;
     public function delete(Request $request, string $id): void;
+    public function getDailyRecords(): Collection;
 }

@@ -12,4 +12,5 @@ interface PersistentRepoInterface {
     public function deleteUser(RandomUser $entity): void;
     public function selectAllUser(): Collection;
     public function saveDaily(DailyRecord $entity): void;
+    public function selectAlldaily(): Collection;
 }

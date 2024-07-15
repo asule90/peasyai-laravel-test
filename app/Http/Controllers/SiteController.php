@@ -9,13 +9,30 @@ use Inertia\Inertia;
 
 class SiteController extends Controller
 {
-    public function index(SiteServiceInterface $service)
+    public function index()
+    {   
+        return Inertia::render('Home');
+    }
+
+    public function report()
+    {   
+        return Inertia::render('Report');
+    }
+
+    public function get(SiteServiceInterface $service)
     {
-        $collection = $service->getList();
-        
-        return Inertia::render('Home', [
-            'data' => $collection
-        ]);
+        try {
+            $collection = $service->getList();
+            
+            return Response::success(
+                data: $collection
+            );
+        } catch (\Throwable $th) {
+            return Response::error(
+                statusCode: $th->getCode(),
+                message: $th->getMessage(),
+            );
+        }
     }
 
     public function delete(Request $request, string $id, SiteServiceInterface $service)
@@ -34,4 +51,21 @@ class SiteController extends Controller
         }
         
     }
+
+    public function getDailyRecords(SiteServiceInterface $service)
+    {
+        try {
+            $collection = $service->getDailyRecords();
+            
+            return Response::success(
+                data: $collection
+            );
+        } catch (\Throwable $th) {
+            return Response::error(
+                statusCode: $th->getCode(),
+                message: $th->getMessage(),
+            );
+        }
+    }
+
 }

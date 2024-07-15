@@ -62,6 +62,17 @@ class PostgreRepo implements PersistentRepoInterface {
             ->get();
     }
 
+    public function selectAlldaily(): Collection {
+        return DailyRecord::select(
+                'date',
+                'male_count',
+                'female_count',
+                'male_avg_age',
+                'female_avg_age',
+            )
+            ->get();
+    }
+
     public function saveDaily(DailyRecord $entity): void {
         $entity->save();
     }

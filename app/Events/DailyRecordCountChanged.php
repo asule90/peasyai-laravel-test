@@ -20,8 +20,8 @@ class DailyRecordCountChanged
      * Create a new event instance.
      */
     public function __construct(public DailyRecord $dailyRecord)
-    {   
-        Log::info('DailyRecordCountChanged event triggered');
+    {  
+        
     }
 
     /**

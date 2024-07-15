@@ -18,5 +18,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::controller(SiteController::class)->group(function () {
-    Route::delete('/{id}', "delete")->whereUuid('id');
+    Route::get('users', "get");
+    Route::get('report/daily', "getDailyRecords");
+    Route::delete('users/{id}', "delete")->whereUuid('id');
 });

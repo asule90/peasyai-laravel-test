@@ -1,7 +1,8 @@
 <template>
   <Layout>
-    <Head title="Welcome" />
+    <Head title="Home" />
     <h1>Peasy.ai</h1>
+    <h3>Home</h3>
 
     <v-card>
       <template v-slot:text>
@@ -19,6 +20,7 @@
         :items="data"
         :headers="headers"
         :search="search"
+        :loading="loading"
       >
         <template v-slot:item="{ item }">
           <tr>
@@ -42,15 +44,13 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import Layout from '@/Layout.vue'
 import { Head } from '@inertiajs/vue3'
 
-defineProps({ 
-  data: Array ,
-})
-
 const search = ref('')
+let data = ref([])
+let loading = ref(true)
 
 const headers = ref([
   { title: 'ID', value: 'uuid', key: 'uuid', sortable: false },
@@ -67,12 +67,29 @@ function deleteUser(uuid) {
     return false;
   }
   
-  window.axios.delete('/api/' + uuid)
+  window.axios.delete('/api/users/' + uuid)
     .then((resp) => {
-      window.location.reload()
+      fetchusers()
     }).catch((err) => {
       alert(err.message)
     })
 }
+
+function fetchUsers() {
+  loading.value = true
+
+  window.axios.get('/api/users')
+    .then((resp) => {
+      data.value = resp.data.data
+    }).catch((err) => {
+      alert(err.message)
+    }).finally(() => {
+      loading.value = false
+    })
+}
+
+onMounted(() => {
+  fetchUsers()
+})
 
 </script>

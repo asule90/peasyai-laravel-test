@@ -37,4 +37,9 @@ class SiteService implements SiteServiceInterface {
             $this->persistentRepo->deleteUser($randUser);
         });
     }
+    
+    public function getDailyRecords(): Collection {
+        return $this->persistentRepo->selectAlldaily();
+    }
+
 }
