@@ -85,7 +85,11 @@ function fetchDaily() {
       initChart(resp.data.data)
     })
     .catch((err) => {
-      alert(err.message)
+      if (err.response.data.message) {
+        alert(err.response.data.message)
+      } else {
+        alert(err.message)
+      }
     })
 }
 

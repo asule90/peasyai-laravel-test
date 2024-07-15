@@ -76,7 +76,11 @@ function deleteUser(uuid) {
     .then((resp) => {
       fetchusers()
     }).catch((err) => {
-      alert(err.message)
+      if (err.response.data.message) {
+        alert(err.response.data.message)
+      } else {
+        alert(err.message)
+      }
     })
 }
 
@@ -87,7 +91,11 @@ function fetchUsers() {
     .then((resp) => {
       data.value = resp.data.data
     }).catch((err) => {
-      alert(err.message)
+      if (err.response.data.message) {
+        alert(err.response.data.message)
+      } else {
+        alert(err.message)
+      }
     }).finally(() => {
       loading.value = false
     })
