@@ -1,0 +1,42 @@
+services:
+  fpm:
+    build: .
+    volumes:
+      - laravel-src:/var/www/html/laravel
+    user: 1000:1000
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    network_mode: "host"
+    container_name: peasyai-laravel
+
+  nginx:
+    build: deploy/nginx
+    volumes:
+      - laravel-src:/var/www/html/laravel
+    ports:
+      - 80:80
+    depends_on:
+      - fpm
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    container_name: peasyai-nginx
+
+  postgres:
+    image: postgres:16-alpine3.20
+    ports:
+      - "5432:5432"
+    env_file:
+      - ./deploy/postgre/.env
+    volumes:
+      - postgres-data:/var/lib/postgresql/data/all
+
+  redis:
+    image: redis:7.2-alpine3.18
+    ports:
+      - 6379:6379
+
+
+volumes:
+  postgres-data:
+  laravel-src:
+
