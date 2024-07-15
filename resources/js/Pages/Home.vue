@@ -14,6 +14,11 @@
           hide-details
           single-line
         ></v-text-field>
+
+        <v-icon 
+          icon="mdi-refresh" color="red"
+          @click="fetchUsers();"
+        />
       </template>
 
       <v-data-table 
