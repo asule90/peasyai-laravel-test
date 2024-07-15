@@ -34,7 +34,7 @@
             <td>{{ item.gender }}</td>
             <td>{{ item.age }}</td>
             <td>{{ item.full_location }}</td>
-            <td>{{ item.created_at }}</td>
+            <td>{{ formatDate(item.created_at) }}</td>
             <td>
               <v-icon 
                 icon="mdi-trash-can" color="red"
@@ -52,6 +52,8 @@
 import { ref, onMounted } from 'vue'
 import Layout from '@/Layout.vue'
 import { Head } from '@inertiajs/vue3'
+import { formatInTimeZone } from "date-fns-tz";
+
 
 const search = ref('')
 let data = ref([])
@@ -99,6 +101,14 @@ function fetchUsers() {
     }).finally(() => {
       loading.value = false
     })
+}
+
+function formatDate(dateString) {
+  const date = new Date(dateString);
+  const timeZone = "Asia/Jakarta";
+  
+  const pattern = "yyyy/MMM/d HH:mm:ss zzz";
+  return formatInTimeZone(date, timeZone, pattern);
 }
 
 onMounted(() => {
