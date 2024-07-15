@@ -4,6 +4,7 @@ namespace App\Repositories;
 use App\Models\DailyRecord;
 use App\Models\RandomUser;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Log;
 
 class PostgreRepo implements PersistentRepoInterface {
 
@@ -19,6 +20,17 @@ class PostgreRepo implements PersistentRepoInterface {
     public function getAvgGenderAgeByDate(string $date): Collection {
         return RandomUser::select('gender')
         ->selectRaw('AVG(age)')
+        ->whereRaw("TO_CHAR(created_at, 'YYYY-MM-DD') LIKE '$date'")
+        ->groupBy('gender')
+        ->orderByRaw("array_position(
+            ARRAY['male', 'female'],
+            gender
+        )")->get();
+    }
+
+    public function getGenderCountByDate(string $date): Collection {
+        return RandomUser::select('gender')
+        ->selectRaw('count(*) as count')
         ->whereRaw("TO_CHAR(created_at, 'YYYY-MM-DD') LIKE '$date'")
         ->groupBy('gender')
         ->orderByRaw("array_position(
@@ -75,5 +87,8 @@ class PostgreRepo implements PersistentRepoInterface {
 
     public function saveDaily(DailyRecord $entity): void {
         $entity->save();
+    }
+    public function saveDailyQuietly(DailyRecord $entity): void {
+        $entity->saveQuietly();
     }
 }

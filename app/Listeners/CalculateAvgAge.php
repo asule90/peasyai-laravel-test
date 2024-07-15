@@ -28,7 +28,8 @@ class CalculateAvgAge /* implements ShouldQueue */
 
             $event->dailyRecord->male_avg_age =  $avgAge->get(0)->avg;
             $event->dailyRecord->female_avg_age = $avgAge->get(1)->avg;
-            $event->dailyRecord->saveQuietly();
+            
+            $this->persistentRepo->saveDailyQuietly($event->dailyRecord);
 
             Log::info('DailyRecordCountChanged listener works: CalculateAvgAge');
         }
