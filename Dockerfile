@@ -44,11 +44,10 @@ RUN apk add --update nodejs npm
 
 USER $USERNAME
 
-RUN npm install @inertiajs/vue3 && npm install && npm run build
-
 RUN composer install --prefer-dist --no-scripts --no-dev --no-autoloader
 COPY --chown=$USER_UID:$USER_GID . .
-RUN composer dump-autoload --no-scripts --no-dev --optimize
+RUN composer dump-autoload --no-scripts --no-dev --optimize \
+    && npm install @inertiajs/vue3 && npm install && npm run build
 
 EXPOSE 9000
 
