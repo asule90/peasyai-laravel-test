@@ -54,7 +54,7 @@ function initChart(data) {
     data: [ ]
   }
   const femaleCountSeries =  {
-    name: 'Male Count',
+    name: 'Female Count',
     data: [ ]
   }
   const femaleAgeAvg =  {
