@@ -22,7 +22,7 @@ class Kernel extends ConsoleKernel
             $schedulerCalculateDaily->everyFiveMinutes();
         } else {
             $schedulerRandomuser->hourly();
-            $schedulerCalculateDaily->daily();
+            $schedulerCalculateDaily->dailyAt('23:50');
         }
     }
 
