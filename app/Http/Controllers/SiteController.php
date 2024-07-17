@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Dto\UserQueryDto;
 use App\Services\SiteServiceInterface;
 use App\Utils\Response;
 use Illuminate\Http\Request;
@@ -19,13 +20,19 @@ class SiteController extends Controller
         return Inertia::render('Report');
     }
 
-    public function get(SiteServiceInterface $service)
+    public function get(Request $request, SiteServiceInterface $service)
     {
         try {
-            $collection = $service->getList();
+            $filterQuery = new UserQueryDto(
+                $request->input('search', null),
+                $request->input('page'),
+                $request->input('per_page'),
+            );
+            $collection = $service->getList($filterQuery);
             
             return Response::success(
-                data: $collection
+                data: $collection->only(['data'])->get('data'),
+                paging: $collection->except(['data'])->toArray()
             );
         } catch (\Throwable $th) {
             return Response::error(

@@ -1,12 +1,14 @@
 <?php
 namespace App\Services;
 
+use App\Dto\UserQueryDto;
 use App\Models\DailyRecord;
 use App\Models\RandomUser;
 use App\Repositories\PersistentRepoInterface;
 use App\Services\SiteServiceInterface;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection as SupportCollection;
 use Illuminate\Support\Facades\DB;
 
 class SiteService implements SiteServiceInterface {
@@ -14,8 +16,17 @@ class SiteService implements SiteServiceInterface {
         public PersistentRepoInterface $persistentRepo
     ){}
 
-    public function getList(): Collection {
-        return $this->persistentRepo->selectAllUser();
+    public function getList(UserQueryDto $filterQuery): SupportCollection {
+        $paginator = $this->persistentRepo->selectPaginatedUser($filterQuery);
+
+        return collect($paginator)->except([
+            'first_page_url',
+            'last_page_url',
+            'next_page_url',
+            'path',
+            'prev_page_url',
+            'links',
+        ]);
     }
 
     public function delete(Request $request, string $id): void {

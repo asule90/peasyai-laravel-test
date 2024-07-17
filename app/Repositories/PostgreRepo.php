@@ -1,9 +1,12 @@
 <?php
 namespace App\Repositories;
 
+use App\Dto\UserQueryDto;
 use App\Models\DailyRecord;
 use App\Models\RandomUser;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Log;
 
 class PostgreRepo implements PersistentRepoInterface {
@@ -55,23 +58,46 @@ class PostgreRepo implements PersistentRepoInterface {
         $entity->delete();
     }
 
-    public function selectAllUser(): Collection {
-        return RandomUser::select(
-                'uuid',
-                'age',
-                'gender',
-                'created_at',
-            )
-            ->selectRaw("CONCAT(name ->> 'title', ' ', name ->> 'first', ' ', name ->> 'last') AS full_name")
-            ->selectRaw("CONCAT(
-                location -> 'street' ->> 'name',
-                ' ', location -> 'street' ->> 'number',
-                ' ', location ->> 'city', 
-                ' ', location ->> 'state'
-                ' ', location ->> 'country') 
-                AS full_location"
-            )
+    private function selectQuery(UserQueryDto $filterQuery) {
+        $query = RandomUser::select(
+            'uuid',
+            'age',
+            'gender',
+            'created_at'
+        )
+        ->selectRaw("CONCAT(name ->> 'title', ' ', name ->> 'first', ' ', name ->> 'last') AS full_name")
+        ->selectRaw("CONCAT(
+            location -> 'street' ->> 'name',
+            ' ', location -> 'street' ->> 'number',
+            ' ', location ->> 'city', 
+            ' ', location ->> 'state',
+            ' ', location ->> 'country') 
+            AS full_location"
+        );
+    
+        if ($filterQuery->search) {
+            $query->where('name->title', 'ILIKE', '%'.$filterQuery->search.'%')
+                ->orWhere('name->first', 'ILIKE', '%'.$filterQuery->search.'%')
+                ->orWhere('name->last', 'ILIKE', '%'.$filterQuery->search.'%')
+                ->orWhere('location->street->name', 'ILIKE', '%'.$filterQuery->search.'%')
+                ->orWhere('location->street->number', 'ILIKE', '%'.$filterQuery->search.'%')
+                ->orWhere('location->city', 'ILIKE', '%'.$filterQuery->search.'%')
+                ->orWhere('location->state', 'ILIKE', '%'.$filterQuery->search.'%')
+                ->orWhere('location->country', 'ILIKE', '%'.$filterQuery->search.'%');
+        }
+
+        return $query;
+    }
+
+    public function selectAllUser(UserQueryDto $filterQuery): Collection {
+        return $this->selectQuery($filterQuery)
             ->get();
+    }
+
+    public function selectPaginatedUser(UserQueryDto $filterQuery): LengthAwarePaginator {
+
+        return $this->selectQuery($filterQuery)
+            ->paginate($filterQuery->per_page);
     }
 
     public function selectAlldaily(): Collection {

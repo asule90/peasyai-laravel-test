@@ -21,11 +21,14 @@
         />
       </template>
 
-      <v-data-table 
+      <v-data-table-server 
+        v-model:items-per-page="perPage"
         :items="data"
+        :items-length="totalItems"
         :headers="headers"
         :search="search"
         :loading="loading"
+        @update:options="loadData"
       >
         <template v-slot:item="{ item }">
           <tr>
@@ -34,7 +37,7 @@
             <td>{{ item.gender }}</td>
             <td>{{ item.age }}</td>
             <td>{{ item.full_location }}</td>
-            <td>{{ formatDate(item.created_at) }}</td>
+            <td>{{ item.created_at }}</td>
             <td>
               <v-icon 
                 icon="mdi-trash-can" color="red"
@@ -43,7 +46,7 @@
             </td>
           </tr>
         </template>
-      </v-data-table>
+      </v-data-table-server>
     </v-card>
   </Layout>
 </template>
@@ -53,11 +56,16 @@ import { ref, onMounted } from 'vue'
 import Layout from '@/Layout.vue'
 import { Head } from '@inertiajs/vue3'
 import { formatInTimeZone } from "date-fns-tz";
+import { useDebouncedRef } from '@/utils'
 
 
-const search = ref('')
+// const search = ref('')
+const search = useDebouncedRef('')
 let data = ref([])
 let loading = ref(true)
+let currentPage = ref(1)
+let perPage = ref(10)
+let totalItems = ref(0)
 
 const headers = ref([
   { title: 'ID', value: 'uuid', key: 'uuid', sortable: false },
@@ -73,9 +81,18 @@ const headers = ref([
 function fetchUsers() {
   loading.value = true
 
-  window.axios.get('/api/users')
+  window.axios.get('/api/users', {
+    params: {
+      page: currentPage.value,
+      per_page: perPage.value,
+      search: search.value,
+    }
+  })
     .then((resp) => {
       data.value = resp.data.data
+      totalItems.value = resp.data.paging.total
+
+
     }).catch((err) => {
       if (err.response?.data?.message) {
         alert(err.response.data.message)
@@ -87,14 +104,6 @@ function fetchUsers() {
     })
 }
 
-function formatDate(dateString) {
-  const date = new Date(dateString);
-  const timeZone = "Asia/Jakarta";
-  
-  const pattern = "yyyy/MMM/d HH:mm:ss zzz";
-  return formatInTimeZone(date, timeZone, pattern);
-}
-
 function deleteUser(uuid) {
   if(!confirm('you are going to delete this data, are you sure?')){
     return false;
@@ -102,6 +111,7 @@ function deleteUser(uuid) {
   
   window.axios.delete('/api/users/' + uuid)
     .then((resp) => {
+      currentPage.value = 1
       fetchUsers()
     }).catch((err) => {
       if (err.response?.data?.message) {
@@ -112,8 +122,12 @@ function deleteUser(uuid) {
     })
 }
 
-onMounted(() => {
-  fetchUsers()
-})
+function loadData ({ page, itemsPerPage, sortBy }) {
+  console.log(search.value)
+  currentPage.value = page
+  perPage.value = itemsPerPage
+
+  fetchUsers(page, itemsPerPage)
+}
 
 </script>
